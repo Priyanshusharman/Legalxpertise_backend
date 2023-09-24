@@ -12,6 +12,7 @@ app.use(cors());
 //Available routes
 app.use("/api/auth", require('./routes/auth'))
 app.use("/api/lawyerauth", require('./routes/lawyerauth'))
+app.use("/api/Booking", require('./routes/lawyerauth'))
 
 // app.use("/api/", require('./routes/notes'))
 
