@@ -12,17 +12,13 @@ const UserSchema = new Schema({
         required: true,
         unique: true
     },
-    state:{
-        type: String,
-        required: true,
-    },
-    pincode:{
-        type: String,
-        required: true,
-    },
     password: {
         type: String,
         required: true
+    },
+    dob: {
+        type: Date,
+        required:true 
     },
     date: {
         type: Date,

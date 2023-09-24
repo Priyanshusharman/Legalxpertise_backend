@@ -1,14 +1,14 @@
 const express = require("express")
 const router = express.Router()
-const User = require("../models/User")
+const Lawyer = require("../models/Lawyer")
 const { body, validationResult } = require('express-validator');
 const bcrypt = require('bcryptjs');
 var jwt = require('jsonwebtoken');
-const fetchUser = require("../middleware/fetchUser.js")
+const fetchLawyer = require("../middleware/fetchLawyer.js")
 const JWT_SECRET = "sximportent"
 
-// ROUTE 1: Create a User using:POST "/api/auth/createuser". No login required
-router.post("/createuser", [body('email', "Enter a valid email").isEmail(), body('name', "Enter a valid name").isLength({ min: 3 }), body('password', "Password must be atleast 5 characters").isLength({ min: 5 }), body('dob', "Enter a valid dob").isDate()
+// ROUTE 1: Create a Lawyer using:POST "/api/lawyerauth/createLawyer". No login required
+router.post("/createLawyer", [body('email', "Enter a valid email").isEmail(), body('name', "Enter a valid name").isLength({ min: 3 }), body('password', "Password must be atleast 5 characters").isLength({ min: 5 }),body('state','enter valid state').isLength({ min: 5 }),body('pincode','enter valid pin').isLength(6), body('state', "Enter a valid state name").isLength({ min: 3 }), body('casewon', "Enter a integer").isNumeric(), body('takencase', "Enter valid token case number").isNumeric(), body('Lawyerid', "PLawyer id invalid").isLength({ min: 5 })
 ], async (req, res) => {
     let success = false;
     //If there are errors, return Bad request and the errors
@@ -17,22 +17,28 @@ router.post("/createuser", [body('email', "Enter a valid email").isEmail(), body
     if (!errors.isEmpty()) {
         return res.status(400).json({ success, errors: errors.array() });
     }
-    //Check weather the user with this email exists already
+    //Check weather the Lawyer with this email exists already
     try {
-        let user = await User.findOne({ email: req.body.email })
-        if (user) {
+        let lawyer = await Lawyer.findOne({ email: req.body.email })
+        if (lawyer) {
             return res.status(400).json({ success, error: "Email already exists" })
         }
         const salt = await bcrypt.genSalt(10);
         secPass = await bcrypt.hash(req.body.password, salt)
-        user = await User.create({
+        lawyer = await Lawyer.create({
             name: req.body.name,
             password: secPass,
             email: req.body.email,
-            dob: req.body.dob
+            pincode:req.body.pincode,
+            state:req.body.state,
+            casewon:req.body.casewon,
+            takencase:req.body.takencase,
+            typesoflawye:req.bodytypesoflawye,
+            Lawyerid:req.body.Lawyerid,
+            pay:req.body.pay
         })
         const data = {
-            id: user.id
+            id: lawyer.id
         }
         const authtoken = jwt.sign(data, JWT_SECRET)
         success = true
@@ -44,8 +50,8 @@ router.post("/createuser", [body('email', "Enter a valid email").isEmail(), body
     }
 })
 
-// ROUTE 2: Authenticate a User using:POST "/api/auth/login". Login required
-router.post("/login", [body('email', "Enter a valid email").isEmail(), body('password', "Password cannot be blank").exists()
+// ROUTE 2: Authenticate a Lawyer using:POST "/api/auth/lawyerlogin". Login required
+router.post("/loginlawyer", [body('email', "Enter a valid email").isEmail(), body('password', "Password cannot be blank").exists()
 ], async (req, res) => {
     //If there are errors, return Bad request and the errors
     let success = false
@@ -55,18 +61,18 @@ router.post("/login", [body('email', "Enter a valid email").isEmail(), body('pas
     }
     const { email, password } = req.body
     try {
-        let user = await User.findOne({ email })
-        if (!user) {
+        let lawyer = await Lawyer.findOne({ email })
+        if (!lawyer) {
             success = false
             return res.status(400).json({ error: "Please try to login with correct credentials" })
         }
-        const passwordCompare = await bcrypt.compare(password, user.password);
+        const passwordCompare = await bcrypt.compare(password, lawyer.password);
         if (!passwordCompare) {
             success = false
             return res.status(400).json({ success, error: "Please try to login with correct credentials" })
         }
         const data = {
-            id: user.id
+            id: lawyer.id
         }
         const authtoken = jwt.sign(data, JWT_SECRET)
         success = true
@@ -78,12 +84,12 @@ router.post("/login", [body('email', "Enter a valid email").isEmail(), body('pas
     }
 })
 
-// ROUTE 3: Authenticate a User using:POST "/api/auth/getUser". Login required
-router.post('/getUser', fetchUser, async (req, res) => {
+// ROUTE 3: Authenticate a Lawyer using:POST "/api/auth/getLawyer". Login required
+router.post('/getLawyer', fetchLawyer, async (req, res) => {
     try {
-        const userId = req.user.id
-        const user = await User.findById(userId).select("-password")
-        res.json(user)
+        const lawyerId = req.lawyer.id
+        const lawyer = await Lawyer.findById(lawyerId).select("-password")
+        res.json(lawyer)
     } catch (error) {
         console.error(error.message)
         res.status(500).send("Internal server error")

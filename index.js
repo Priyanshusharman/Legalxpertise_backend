@@ -11,8 +11,9 @@ app.use(cors());
 
 //Available routes
 app.use("/api/auth", require('./routes/auth'))
+app.use("/api/lawyerauth", require('./routes/lawyerauth'))
 
-//app.use("/api/notes", require('./routes/notes'))
+// app.use("/api/", require('./routes/notes'))
 
 app.listen(port, () => {
     console.log(`App is running on port http://localhost:${port}`)
