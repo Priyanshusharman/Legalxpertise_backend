@@ -13,7 +13,7 @@ app.use(cors());
 app.use("/api/auth", require('./routes/auth'))
 app.use("/api/lawyerauth", require('./routes/lawyerauth'))
 // app.use("/api/Booking", require('./routes/lawyerbooking'))
-// app.use("/api/search", require('./routes/lawyer'))
+app.use("/api/search", require('./routes/lawyer'))
 
 // app.use("/api/", require('./routes/notes'))
 
