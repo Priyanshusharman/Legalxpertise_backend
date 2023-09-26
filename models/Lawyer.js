@@ -37,7 +37,7 @@ const Lawyerschema = new Schema({
         default: 0
     },
     typesoflawyer: [{
-        type: Number
+        type: String
         // , required: true,
     }],
     Lawyerid: {
@@ -49,10 +49,14 @@ const Lawyerschema = new Schema({
         type: Number,
         required: true
     },
+    bio:{
+        type: String,
+        required: true
+    },
     date: {
         type: Date,
         default: Date.now
-    }
+    },
 
 })
 const Lawyer = mongoose.model("Lawyer", Lawyerschema)

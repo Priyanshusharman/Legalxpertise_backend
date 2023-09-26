@@ -8,7 +8,7 @@ const fetchLawyer = require("../middleware/fetchLawyer.js")
 const JWT_SECRET = "sximportent"
 
 // ROUTE 1: Create a Lawyer using:POST "/api/lawyerauth/createLawyer". No login required
-router.post("/createLawyer", [body('email', "Enter a valid email").isEmail(), body('name', "Enter a valid name").isLength({ min: 3 }), body('password', "Password must be atleast 5 characters").isLength({ min: 5 }),body('state','enter valid state').isLength({ min: 5 }),body('pincode','enter valid pin').isLength(6), body('state', "Enter a valid state name").isLength({ min: 3 }), body('casewon', "Enter a integer").isNumeric(), body('takencase', "Enter valid token case number").isNumeric(), body('Lawyerid', "PLawyer id invalid").isLength({ min: 5 })
+router.post("/createLawyer", [body('email', "Enter a valid email").isEmail(), body('name', "Enter a valid name").isLength({ min: 3 }), body('password', "Password must be atleast 5 characters").isLength({ min: 5 }),body('state','enter valid state').isLength({ min: 5 }),body('pincode','enter valid pin').isLength(6), body('state', "Enter a valid state name").isLength({ min: 3 }), body('casewon', "Enter a integer").isNumeric(), body('takencase', "Enter valid token case number").isNumeric(), body('Lawyerid', "PLawyer id invalid").isLength({ min: 5 }),body('bio', "min 100 words").isLength({ min: 100 })
 ], async (req, res) => {
     let success = false;
     //If there are errors, return Bad request and the errors
@@ -35,7 +35,8 @@ router.post("/createLawyer", [body('email', "Enter a valid email").isEmail(), bo
             takencase:req.body.takencase,
             typesoflawyer:req.body.typesoflawyer,
             Lawyerid:req.body.Lawyerid,
-            pay:req.body.pay
+            pay:req.body.pay,
+            bio:req.body.bio
         })
         const data = {
             id: lawyer.id
