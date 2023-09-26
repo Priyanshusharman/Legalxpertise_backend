@@ -33,7 +33,7 @@ router.post("/createLawyer", [body('email', "Enter a valid email").isEmail(), bo
             state:req.body.state,
             casewon:req.body.casewon,
             takencase:req.body.takencase,
-            typesoflawye:req.body.typesoflawye,
+            typesoflawyer:req.body.typesoflawyer,
             Lawyerid:req.body.Lawyerid,
             pay:req.body.pay
         })
