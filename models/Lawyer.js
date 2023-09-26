@@ -37,7 +37,8 @@ const Lawyerschema = new Schema({
         default: 0
     },
     typesoflawyer: [{
-        type: 'String', required: true,
+        type: Number
+        // , required: true,
     }],
     Lawyerid: {
         type: String,

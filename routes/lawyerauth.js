@@ -33,7 +33,7 @@ router.post("/createLawyer", [body('email', "Enter a valid email").isEmail(), bo
             state:req.body.state,
             casewon:req.body.casewon,
             takencase:req.body.takencase,
-            typesoflawye:req.bodytypesoflawye,
+            typesoflawye:req.body.typesoflawye,
             Lawyerid:req.body.Lawyerid,
             pay:req.body.pay
         })
@@ -42,7 +42,7 @@ router.post("/createLawyer", [body('email', "Enter a valid email").isEmail(), bo
         }
         const authtoken = jwt.sign(data, JWT_SECRET)
         success = true
-        res.json({ success, authtoken })
+        res.json({ success, authtoken , lawyer})
     }
     catch (error) {
         console.error(error.message)
